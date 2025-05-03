@@ -1,12 +1,12 @@
 {
   "$schema": "https://raw.githubusercontent.com/jetify-com/devbox/0.10.7/.schema/devbox.schema.json",
   "packages": [
+    "act@latest",
     "civo@latest",
     "envsubst@latest",
     "gh@latest",
-    "go@latest",
     "go-task@latest",
-    "path:gcloud#google-cloud-sdk",
+    "go@latest",
     "gum@latest",
     "jq@latest",
     "k9s@latest",
@@ -15,16 +15,17 @@
     "ko@latest",
     "kubectl@latest",
     "kubectx@latest",
+    "kubent@latest",
     "kubernetes-helm@latest",
     "kustomize@latest",
-    "oras@latest",
     "nodejs_20@latest",
+    "oras@latest",
+    "path:gcloud#google-cloud-sdk",
     "poetry@latest",
+    "procps",
     "python312@latest",
     "tilt@latest",
-    "yq-go@latest",
-    "act@latest",
-    "kubent@latest"
+    "yq-go@latest"
   ],
   "shell": {
     "init_hook": [
