@@ -1,6 +1,22 @@
 version: "3"
 
 includes:
-  setup:
-    taskfile: ./03-installation-and-setup/Taskfile.yaml
+  01_setup:
     dir: ./03-installation-and-setup
+    taskfile: ./03-installation-and-setup/Taskfile.yaml
+  02_deployment:
+    dir: ./04-built-in-resource-types/Deployment
+    taskfile: ./04-built-in-resource-types/Deployment/Taskfile.yaml
+  03_service:
+    dir: ./04-built-in-resource-types/Service
+    taskfile: ./04-built-in-resource-types/Service/Taskfile.yaml
+  04_job:
+    dir: ./04-built-in-resource-types/Job
+    taskfile: ./04-built-in-resource-types/Job/Taskfile.yaml
+  05_config_map:
+    dir: ./04-built-in-resource-types/ConfigMap
+    taskfile: ./04-built-in-resource-types/ConfigMap/Taskfile.yaml
+
+
+
+    
