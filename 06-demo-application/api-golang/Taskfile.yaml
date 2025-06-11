@@ -29,5 +29,6 @@ tasks:
           --platform=all
 
   build-container-image-multi-arch:
+    desc: Build multi-arch container image
     cmds:
       - task: build-container-image
