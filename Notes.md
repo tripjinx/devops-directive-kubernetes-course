@@ -1,0 +1,130 @@
+# Kubernetes 
+  - look up bash scripting / powershell
+
+## Commands
+  - kubectx - switch kubernetes contexts
+    - context (cluster, user, namespace)
+  - kubectl get pods
+## General Notes
+  - always provision resources and configurations declaritivly in files rather than on the command line
+
+## History and Motivation
+  - treate clusters of machines as a single resource
+  - key terms
+    - cluster - set of resources that make up a kubernetes system
+    - node - server (vm or bare metal)
+    - control plane - components that comprise kubernetes itself
+    - data plane - end user applications
+  - control plane nodes
+    - cloud controller manager - interface between kubernets and cloud provider (this is not the end user, but in case you want to provision resources outside of the kubernetes enviornment)
+    - controller manager - controllers that regulate the state of the cluster
+      - makes sure actual state matches desired state
+    - api - how you interact with the api
+    - etcd - data store to manage resources
+    - scheduler - assign pods to new nodes based on usage
+  - worker nodes
+    - kubelet - responsible and manage workloads, forms healthchecks
+    - kube proxy - maintain network between workloads
+  - **most cloud providers abstract away these types of nodes and allow the user to focus on the deployed workloads**
+  - kubernetes standard interfaces
+    - container runtime (CRI)
+      - allows you to run containers
+      - docker used to be popular, now its containerd or crio
+    - container network (CNI)
+      - how networking should be done with running containers
+      - many cloud providers have different implementations of this
+    - container storage (CSI)
+      - storage for containers
+      - provider durable and persistent storage to containers
+      - again cloud providers implement this differently
+## Kubernetes Pods
+  - namespace - group resources within a cluster 
+  - default namespaces
+    - default
+    - kube-system - kubernetes system components
+    - kube-public - publicly readable, mostly unsued
+    - kube-node-release - for node heartbeat tracking
+  - pod - smallest deployable resource
+    - almost never create directly
+    - generally have 1 container, or a couple of sidecar or init containers
+    - these could be a metrics aggregator for instance (runs on the same network)
+    - share network, storage
+    - types of configurations
+      - listening ports
+      - health probes (kubelet something)
+      - resource requests/limits
+      - security context
+      - environment variables
+      - volumes
+      - DNS policies
+    - setting max resources on a container
+    - non-root users can't bind to specific ports (port 80 for instance)
+  - replica set
+    - create multiple of the same pod (identical)
+      - if pods are not avaliable (health checks) the replica set creates a new one
+    - interact with them using labels
+  - deployment
+    - one layer on top of a replica set
+    - provides new functionality including rolling updates, rollbacks, revision history and update strategies (which pods are updated, how many can be unhealthy etc)
+    - deployments allow for a declarative approach for
+  - service
+    - internal load balancer across replicas
+    - uses pod labels to determine which pods to serve
+    - the cloud provisioner part of the control plane can set up the external load balancer (cloud provided) for routing traffic into the cluster.
+    - all pods are reacable by all other pods by default
+  - job
+    - used for the execution of workloads that run to completion
+    - has advantages over pods
+      - guaranteed completion
+      - retry logic
+      - parallelism
+      - cleanup 
+  - CronJob
+    - run jobs on a schedule
+  - DaemonSet
+    - runs a copy of the specified pod on all (or a subset of all) nodes in the cluster
+    - useful for
+      - cluster storage daemon
+      - log aggregation
+      - node monitoring
+  - StatefulSet
+    - similar to a deployment except that pods are rolled out in a predictable way
+  - ConfigMaps
+    - primary styles
+      - property-like-keys
+      - file-like-keys
+    - decouple config from enviornment specifc information
+  - Secrets
+    - data is base64 encoded by default, which promotes binary data being injected as secrets
+  - Ingress
+    - specific type of pod that forwards traffic to other pods/nodes in our cluster
+  - PersistentVolume & PersistentVolumeChains
+    - Access Modes
+      - ReadWriteOnce
+        - mount to one pod with read and write
+      - ReadOnlyMany
+        - multiple pods can mount be only one can read
+      - ReadWriteMany
+        - multiple pods can read/write at the same time
+        - underlying implementation must support this capability 
+  - RBAC (serviceAccount, Role, RoleBinding)
+    - provides applications (or user) access to the kubernetes api
+    - granted by namespace or cluster wide
+  - Labels & Annotations
+    - labels
+      - key: value pairs used to identify and organize kubernetes resources
+      - file api-server queries
+    - annotations
+      - key: value pairs used for non-identifying information
+## Helm
+  - combines:
+    - package manager
+    - templating engine
+  - Helm can take definitions found in a **values.yaml** file and template them into your service configuration, which is then deployed into the kubernetes cluster
+  - metadata
+    - chart
+    - release
+    - values
+  - variables
+  - conditionals (if)
+  - loops (range)
